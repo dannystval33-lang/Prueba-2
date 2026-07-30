@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureNet</title>
+
+    <link rel="stylesheet" href="/client/assets/css/dashboard.css">
+</head>
+<body>
+ <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>SECURENET</h2>
+      <nav>
+        <ul>
+          <li>Inicio</li>
+          <li>Incidencias</li>
+          <li>Alertas</li>
+          <li>Empresas</li>
+          <li>Dispositivos</li>
+          <li>Usuarios</li>
+          <li>Roles</li>
+          <li>Reportes</li>
+          <li>Configuración</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <div class="main">
+
+      <!-- Header -->
+      <header class="header">
+        <h1>Bienvenido, <span id="userName"></span></h1>
+        <input type="text" placeholder="Buscar clientes..." />
+      </header>
+
+      <!-- Sección principal -->
+      <section class="content">
+
+        <!-- Tarjetas -->
+        <div class="cards">
+          <div class="card">Clientes Registrados</div>
+          <div class="card">Servicios Asignados</div>
+          <div class="card">Asignaciones Activas</div>
+          <div class="card">Usuarios Activos</div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-section">
+          <h3>Clientes Recientes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cédula/NIT</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Servicios</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Juan Pérez</td>
+                <td>123456789</td>
+                <td>3001234567</td>
+                <td>juan@mail.com</td>
+                <td>2</td>
+                <td>Activo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+    </div>
+
+  </div>
+
+  <script src="/client/assets/js/dashboard.js"></script>
+</body>
+</html>
