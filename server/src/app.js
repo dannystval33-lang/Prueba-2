@@ -1,10 +1,10 @@
 import express from 'express';
-import fichaRoutes from "./routes/fichaRoutes.js";
+import incidenciaRoutes from "./routes/incidenciaRoutes.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api/incidencias", fichaRoutes);
+app.use("/api/incidencias", incidenciaRoutes);
 
 export default app;

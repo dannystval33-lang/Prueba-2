@@ -4,7 +4,7 @@ import {
     crearIncidencia,
     actualizarIncidencia,
     eliminarIncidencia
-} from "../controller/fichaController.js";
+} from "../controller/incidenciaController.js";
 
 const router = Router();
 

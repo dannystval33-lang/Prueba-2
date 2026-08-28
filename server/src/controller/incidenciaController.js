@@ -1,10 +1,10 @@
-import * as fichaService from '../services/fichaServices.js';
+import * as incidenciaService from '../services/incidenciaServices.js';
 
 export const getIncidencias = (req, res) => {
 
     try {
         console.log("[Controlador]: Han solicitado la lista de incidencias.");
-        const incidencias = fichaService.obtenerTodasLasIncidencias();
+        const incidencias = incidenciaService.obtenerTodasLasIncidencias();
 
         res.status(200).json({
             mensaje: "Lista de incidencias recuperada correctamente.",
@@ -38,7 +38,7 @@ export const crearIncidencia = (req, res) => {
             });
         }
 
-        const nuevaIncidencia = fichaService.crearIncidencia(req.body);
+        const nuevaIncidencia = incidenciaService.crearIncidencia(req.body);
 
         res.status(201).json({
             mensaje: "Incidencia registrada correctamente.",
@@ -54,7 +54,7 @@ export const actualizarIncidencia = (req, res) => {
 
     try {
         console.log("[Controlador]: Solicitud para actualizar una incidencia.");
-        const incidenciaActualizada = fichaService.actualizarIncidencia(
+        const incidenciaActualizada = incidenciaService.actualizarIncidencia(
             req.params.id,
             req.body
         );
@@ -77,7 +77,7 @@ export const eliminarIncidencia = (req, res) => {
 
     try {
         console.log("[Controlador]: Solicitud para eliminar una incidencia.");
-        fichaService.eliminarIncidencia(req.params.id);
+        incidenciaService.eliminarIncidencia(req.params.id);
 
         res.status(200).json({
             mensaje: "Incidencia eliminada correctamente."

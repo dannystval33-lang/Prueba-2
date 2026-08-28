@@ -7,78 +7,203 @@
 
     <link rel="stylesheet" href="/client/assets/css/dashboard.css">
 </head>
+
 <body>
- <div class="container">
-    <!-- Sidebar -->
+
+<div class="container">
     <aside class="sidebar">
-      <h2>SECURENET</h2>
-      <nav>
-        <ul>
-          <li>Inicio</li>
-          <li>Incidencias</li>
-          <li>Alertas</li>
-          <li>Empresas</li>
-          <li>Dispositivos</li>
-          <li>Usuarios</li>
-          <li>Roles</li>
-          <li>Reportes</li>
-          <li>Configuración</li>
-        </ul>
-      </nav>
+        <h2>SECURENET</h2>
+        <nav>
+            <ul>
+                <li class="active">Inicio</li>
+                <li>Incidencias</li>
+                <li>Alertas</li>
+                <li>Empresas</li>
+                <li>Dispositivos</li>
+                <li>Usuarios</li>
+                <li>Roles</li>
+                <li>Reportes</li>
+                <li>Configuración</li>
+            </ul>
+        </nav>
     </aside>
 
+
     <!-- Contenido principal -->
-    <div class="main">
+    <main class="main">
 
-      <!-- Header -->
-      <header class="header">
-        <h1>Bienvenido, <span id="userName"></span></h1>
-        <input type="text" placeholder="Buscar clientes..." />
-      </header>
+        <!-- Header -->
+        <header class="header">
+            <div>
+                <h1>Bienvenido, <span id="userName"></span></h1>
+                <p>Panel de administración de SecureNet</p>
+            </div>
 
-      <!-- Sección principal -->
-      <section class="content">
+            <input 
+                type="text" 
+                placeholder="Buscar clientes..."
+            >
+        </header>
 
-        <!-- Tarjetas -->
-        <div class="cards">
-          <div class="card">Clientes Registrados</div>
-          <div class="card">Servicios Asignados</div>
-          <div class="card">Asignaciones Activas</div>
-          <div class="card">Usuarios Activos</div>
-        </div>
 
-        <!-- Tabla -->
-        <div class="table-section">
-          <h3>Clientes Recientes</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Cédula/NIT</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Servicios</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Juan Pérez</td>
-                <td>123456789</td>
-                <td>3001234567</td>
-                <td>juan@mail.com</td>
-                <td>2</td>
-                <td>Activo</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <!-- Contenido -->
+        <section class="content">
 
-      </section>
-    </div>
+            <!-- Tarjetas -->
+            <div class="cards">
 
-  </div>
+                <div class="card">
+                    <h3>Clientes Registrados</h3>
+                    <p>532</p>
+                </div>
 
-  <script src="/client/assets/js/dashboard.js"></script>
+                <div class="card">
+                    <h3>Servicios asignados</h3>
+                    <p>12</p>
+                </div>
+
+                <div class="card">
+                    <h3>Asignaciones activas</h3>
+                    <p>5</p>
+                </div>
+
+                <div class="card">
+                    <h3>Usuarios activos</h3>
+                    <p>45</p>
+                </div>
+
+            </div>
+
+
+            <!-- Tabla + Acciones -->
+            <div class="dashboard-bottom">
+
+                <!-- Tabla -->
+                <div class="table-section">
+
+                    <div class="section-header">
+                        <div>
+                            <h3>Clientes recientes</h3>
+                            <p>Últimos clientes registrados en el sistema</p>
+                        </div>
+
+                        <button class="btn-secondary">
+                            Ver todos
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cédula/NIT</th>
+                                    <th>Teléfono</th>
+                                    <th>Correo</th>
+                                    <th>Servicios</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Juan Pérez</td>
+                                    <td>123456789</td>
+                                    <td>3001234567</td>
+                                    <td>juan@mail.com</td>
+                                    <td>2</td>
+                                    <td>
+                                        <span class="estado activo">
+                                            Activo
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>María Gómez</td>
+                                    <td>987654321</td>
+                                    <td>3109876543</td>
+                                    <td>maria@mail.com</td>
+                                    <td>3</td>
+                                    <td>
+                                        <span class="estado activo">
+                                            Activo
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+
+                <!-- Acciones rápidas -->
+                <aside class="actions">
+
+                    <div class="actions-header">
+                        <div class="actions-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+                            <h3>Acciones rápidas</h3>
+                            <p>Accesos frecuentes</p>
+                        </div>
+                    </div>
+
+                    <div class="actions-list">
+
+                        <button class="action-btn">
+                            <span class="action-icon">👤</span>
+                            <span>
+                                <strong>Nuevo Cliente</strong>
+                                <small>Registrar un cliente</small>
+                            </span>
+                        </button>
+
+                        <button class="action-btn">
+                            <span class="action-icon">⚙️</span>
+                            <span>
+                                <strong>Asignar Servicio</strong>
+                                <small>Asignar un nuevo servicio</small>
+                            </span>
+                        </button>
+
+                        <button class="action-btn">
+                            <span class="action-icon">🔍</span>
+                            <span>
+                                <strong>Buscar Cliente</strong>
+                                <small>Consultar información</small>
+                            </span>
+                        </button>
+
+                        <button class="action-btn">
+                            <span class="action-icon">📊</span>
+                            <span>
+                                <strong>Generar Reporte</strong>
+                                <small>Crear un nuevo reporte</small>
+                            </span>
+                        </button>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="/client/assets/js/dashboard.js"></script>
+
 </body>
 </html>
