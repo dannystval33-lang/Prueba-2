@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const USUARIO = 'admin@mail.com';
     const PASSWORD = '123asd';
-    const nombreUsuario = 'Dany';
+    const nombreUsuario = 'Usuario Admin'; // Nombre de usuario para mostrar en el dashboard
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
