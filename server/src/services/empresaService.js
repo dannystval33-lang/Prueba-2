@@ -1,86 +1,114 @@
-let empresas = [
-    {
-        id: 1,
-        nombre: "SECURENET S.A.S.",
-        nit: "900123456-1",
-        direccion: "Medellín",
-        telefono: "6041234567",
-        correo: "contacto@securenet.com"
-    },
-    {
-        id: 2,
-        nombre: "Tecnología Segura S.A.",
-        nit: "901234567-2",
-        direccion: "Bogotá",
-        telefono: "6017654321",
-        correo: "info@tecnologiasegura.com"
-    }
-];
-
+import pool from "../config/db.js";
 
 // Obtener todas las empresas
-export const obtenerTodasLasEmpresas = () => {
-    return empresas;
+export const obtenerTodasLasEmpresas = async () => {
+
+    const [rows] = await pool.query(
+        "SELECT * FROM empresas"
+    );
+
+    return rows;
 };
 
 
 // Obtener una empresa por ID
-export const obtenerEmpresaPorId = (id) => {
-    return empresas.find(empresa => empresa.id === Number(id));
+export const obtenerEmpresaPorId = async (id) => {
+
+    const [rows] = await pool.query(
+        "SELECT * FROM empresas WHERE id = ?",
+        [id]
+    );
+
+    return rows[0] || null;
 };
 
 
 // Crear una empresa
-export const crearEmpresa = (datos) => {
+export const crearEmpresa = async (datos) => {
 
-    const nuevaEmpresa = {
-        id: empresas.length + 1,
-        nombre: datos.nombre,
-        nit: datos.nit,
-        direccion: datos.direccion,
-        telefono: datos.telefono,
-        correo: datos.correo
+    const {
+        nombre,
+        nit,
+        direccion,
+        telefono,
+        correo
+    } = datos;
+
+    const [resultado] = await pool.query(
+        `INSERT INTO empresas
+        (nombre, nit, direccion, telefono, email)
+        VALUES (?, ?, ?, ?, ?)`,
+        [
+            nombre,
+            nit,
+            direccion,
+            telefono,
+            correo
+        ]
+    );
+
+    return {
+        id: resultado.insertId,
+        nombre,
+        nit,
+        direccion,
+        telefono,
+        correo
     };
-
-    empresas.push(nuevaEmpresa);
-
-    return nuevaEmpresa;
 };
 
 
 // Actualizar una empresa
-export const actualizarEmpresa = (id, datos) => {
+export const actualizarEmpresa = async (id, datos) => {
 
-    const empresa = empresas.find(
-        empresa => empresa.id === Number(id)
+    const {
+        nombre,
+        nit,
+        direccion,
+        telefono,
+        correo
+    } = datos;
+
+    const [resultado] = await pool.query(
+        `UPDATE empresas
+        SET
+            nombre = ?,
+            nit = ?,
+            direccion = ?,
+            telefono = ?,
+            email = ?
+        WHERE id = ?`,
+        [
+            nombre,
+            nit,
+            direccion,
+            telefono,
+            correo,
+            id
+        ]
     );
+
+    if (resultado.affectedRows === 0) {
+        return null;
+    }
+
+    return obtenerEmpresaPorId(id);
+};
+
+
+// Eliminar una empresa
+export const eliminarEmpresa = async (id) => {
+
+    const empresa = await obtenerEmpresaPorId(id);
 
     if (!empresa) {
         return null;
     }
 
-    empresa.nombre = datos.nombre ?? empresa.nombre;
-    empresa.nit = datos.nit ?? empresa.nit;
-    empresa.direccion = datos.direccion ?? empresa.direccion;
-    empresa.telefono = datos.telefono ?? empresa.telefono;
-    empresa.correo = datos.correo ?? empresa.correo;
-
-    return empresa;
-};
-
-
-// Eliminar una empresa
-export const eliminarEmpresa = (id) => {
-
-    const indice = empresas.findIndex(
-        empresa => empresa.id === Number(id)
+    await pool.query(
+        "DELETE FROM empresas WHERE id = ?",
+        [id]
     );
 
-    if (indice === -1) {
-        return null;
-    }
-
-    const empresaEliminada = empresas.splice(indice, 1);
-
-    return empresaEliminada[0];
+    return empresa;
 };

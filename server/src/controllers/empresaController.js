@@ -7,91 +7,156 @@ import {
 } from "../services/empresaService.js";
 
 
-export const getEmpresas = (req, res) => {
+// Obtener todas las empresas
+export const getEmpresas = async (req, res) => {
 
-    const empresas = obtenerTodasLasEmpresas();
+    try {
 
-    res.status(200).json(empresas);
+        const empresas = await obtenerTodasLasEmpresas();
+
+        res.status(200).json(empresas);
+
+    } catch (error) {
+
+        console.error("Error al obtener empresas:", error);
+
+        res.status(500).json({
+            mensaje: "Error al obtener las empresas"
+        });
+
+    }
 };
 
 
-export const getEmpresaById = (req, res) => {
+// Obtener una empresa por ID
+export const getEmpresaById = async (req, res) => {
 
-    const empresa = obtenerEmpresaPorId(req.params.id);
+    try {
 
-    if (!empresa) {
-        return res.status(404).json({
-            mensaje: "Empresa no encontrada"
+        const empresa = await obtenerEmpresaPorId(req.params.id);
+
+        if (!empresa) {
+            return res.status(404).json({
+                mensaje: "Empresa no encontrada"
+            });
+        }
+
+        res.status(200).json(empresa);
+
+    } catch (error) {
+
+        console.error("Error al obtener la empresa:", error);
+
+        res.status(500).json({
+            mensaje: "Error al obtener la empresa"
         });
-    }
 
-    res.status(200).json(empresa);
+    }
 };
 
 
-export const postEmpresa = (req, res) => {
+// Crear una empresa
+export const postEmpresa = async (req, res) => {
 
-    const {
-        nombre,
-        nit,
-        direccion,
-        telefono,
-        correo
-    } = req.body;
+    try {
 
-    if (!nombre || !nit) {
-        return res.status(400).json({
-            mensaje: "El nombre y el NIT son obligatorios"
+        const {
+            nombre,
+            nit,
+            direccion,
+            telefono,
+            correo
+        } = req.body;
+
+        if (!nombre || !nit) {
+            return res.status(400).json({
+                mensaje: "El nombre y el NIT son obligatorios"
+            });
+        }
+
+        const nuevaEmpresa = await crearEmpresa({
+            nombre,
+            nit,
+            direccion,
+            telefono,
+            correo
         });
+
+        res.status(201).json({
+            mensaje: "Empresa creada correctamente",
+            empresa: nuevaEmpresa
+        });
+
+    } catch (error) {
+
+        console.error("Error al crear empresa:", error);
+
+        res.status(500).json({
+            mensaje: "Error al crear la empresa"
+        });
+
     }
-
-    const nuevaEmpresa = crearEmpresa({
-        nombre,
-        nit,
-        direccion,
-        telefono,
-        correo
-    });
-
-    res.status(201).json({
-        mensaje: "Empresa creada correctamente",
-        empresa: nuevaEmpresa
-    });
 };
 
 
-export const putEmpresa = (req, res) => {
+// Actualizar una empresa
+export const putEmpresa = async (req, res) => {
 
-    const empresaActualizada = actualizarEmpresa(
-        req.params.id,
-        req.body
-    );
+    try {
 
-    if (!empresaActualizada) {
-        return res.status(404).json({
-            mensaje: "Empresa no encontrada"
+        const empresaActualizada = await actualizarEmpresa(
+            req.params.id,
+            req.body
+        );
+
+        if (!empresaActualizada) {
+            return res.status(404).json({
+                mensaje: "Empresa no encontrada"
+            });
+        }
+
+        res.status(200).json({
+            mensaje: "Empresa actualizada correctamente",
+            empresa: empresaActualizada
         });
-    }
 
-    res.status(200).json({
-        mensaje: "Empresa actualizada correctamente",
-        empresa: empresaActualizada
-    });
+    } catch (error) {
+
+        console.error("Error al actualizar empresa:", error);
+
+        res.status(500).json({
+            mensaje: "Error al actualizar la empresa"
+        });
+
+    }
 };
 
 
-export const deleteEmpresa = (req, res) => {
+// Eliminar una empresa
+export const deleteEmpresa = async (req, res) => {
 
-    const empresaEliminada = eliminarEmpresa(req.params.id);
+    try {
 
-    if (!empresaEliminada) {
-        return res.status(404).json({
-            mensaje: "Empresa no encontrada"
+        const empresaEliminada = await eliminarEmpresa(req.params.id);
+
+        if (!empresaEliminada) {
+            return res.status(404).json({
+                mensaje: "Empresa no encontrada"
+            });
+        }
+
+        res.status(200).json({
+            mensaje: "Empresa eliminada correctamente",
+            empresa: empresaEliminada
         });
-    }
 
-    res.status(200).json({
-        mensaje: "Empresa eliminada correctamente",
-        empresa: empresaEliminada
-    });
+    } catch (error) {
+
+        console.error("Error al eliminar empresa:", error);
+
+        res.status(500).json({
+            mensaje: "Error al eliminar la empresa"
+        });
+
+    }
 };

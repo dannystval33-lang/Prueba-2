@@ -1,10 +1,15 @@
-import * as incidenciaService from '../services/incidenciaService.js';
+import * as incidenciaService from "../services/incidenciaService.js";
 
-export const getIncidencias = (req, res) => {
+
+// Obtener todas las incidencias
+export const getIncidencias = async (req, res) => {
 
     try {
+
         console.log("[Controlador]: Han solicitado la lista de incidencias.");
-        const incidencias = incidenciaService.obtenerTodasLasIncidencias();
+
+        const incidencias =
+            await incidenciaService.obtenerTodasLasIncidencias();
 
         res.status(200).json({
             mensaje: "Lista de incidencias recuperada correctamente.",
@@ -14,31 +19,52 @@ export const getIncidencias = (req, res) => {
 
     } catch (error) {
 
+        console.error("Error al obtener las incidencias:", error);
+
         res.status(500).json({
             mensaje: "Error al obtener las incidencias."
         });
     }
 };
 
-export const crearIncidencia = (req, res) => {
+
+// Crear una incidencia
+export const crearIncidencia = async (req, res) => {
 
     try {
-        console.log("[Controlador]: Recibida petición para crear una incidencia.");
+
+        console.log(
+            "[Controlador]: Recibida petición para crear una incidencia."
+        );
+
+        const {
+            empresa_id,
+            titulo,
+            descripcion,
+            prioridad,
+            ubicacion
+        } = req.body;
+
 
         // Validamos los datos obligatorios
         if (
-            !req.body.titulo ||
-            !req.body.descripcion ||
-            !req.body.prioridad ||
-            !req.body.ubicacion
+            !empresa_id ||
+            !titulo ||
+            !descripcion ||
+            !prioridad ||
+            !ubicacion
         ) {
 
             return res.status(400).json({
-                mensaje: "Error de validación: 'titulo', 'descripcion', 'prioridad' y 'ubicacion' son obligatorios."
+                mensaje:
+                    "Error de validación: 'empresa_id', 'titulo', 'descripcion', 'prioridad' y 'ubicacion' son obligatorios."
             });
         }
 
-        const nuevaIncidencia = incidenciaService.crearIncidencia(req.body);
+
+        const nuevaIncidencia =
+            await incidenciaService.crearIncidencia(req.body);
+
 
         res.status(201).json({
             mensaje: "Incidencia registrada correctamente.",
@@ -46,18 +72,30 @@ export const crearIncidencia = (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({mensaje: "Error interno del servidor al crear la incidencia."});
+
+        console.error("Error al crear la incidencia:", error);
+
+        res.status(500).json({
+            mensaje: "Error interno del servidor al crear la incidencia."
+        });
     }
 };
 
-export const actualizarIncidencia = (req, res) => {
+
+// Actualizar una incidencia
+export const actualizarIncidencia = async (req, res) => {
 
     try {
-        console.log("[Controlador]: Solicitud para actualizar una incidencia.");
-        const incidenciaActualizada = incidenciaService.actualizarIncidencia(
-            req.params.id,
-            req.body
+
+        console.log(
+            "[Controlador]: Solicitud para actualizar una incidencia."
         );
+
+        const incidenciaActualizada =
+            await incidenciaService.actualizarIncidencia(
+                req.params.id,
+                req.body
+            );
 
         res.status(200).json({
             mensaje: "Incidencia actualizada correctamente.",
@@ -66,27 +104,46 @@ export const actualizarIncidencia = (req, res) => {
 
     } catch (error) {
 
+        console.error(
+            "Error al actualizar la incidencia:",
+            error
+        );
+
         res.status(404).json({
             mensaje: error.message
         });
-
     }
 };
 
-export const eliminarIncidencia = (req, res) => {
+
+// Eliminar una incidencia
+export const eliminarIncidencia = async (req, res) => {
 
     try {
-        console.log("[Controlador]: Solicitud para eliminar una incidencia.");
-        incidenciaService.eliminarIncidencia(req.params.id);
+
+        console.log(
+            "[Controlador]: Solicitud para eliminar una incidencia."
+        );
+
+        const incidenciaEliminada =
+            await incidenciaService.eliminarIncidencia(
+                req.params.id
+            );
 
         res.status(200).json({
-            mensaje: "Incidencia eliminada correctamente."
+            mensaje: "Incidencia eliminada correctamente.",
+            incidenciaEliminada
         });
 
     } catch (error) {
+
+        console.error(
+            "Error al eliminar la incidencia:",
+            error
+        );
+
         res.status(404).json({
             mensaje: error.message
         });
-        
     }
 };

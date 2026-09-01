@@ -1,91 +1,135 @@
-let incidencias = [
-    {
-        id: 1,
-        titulo: "Acceso no autorizado",
-        descripcion: "Se detectó ingreso fuera del horario autorizado.",
-        prioridad: "Alta",
-        ubicacion: "Oficina Principal",
-        estado: "Abierta"
-    },
-    {
-        id: 2,
-        titulo: "Falla en cámara de seguridad",
-        descripcion: "La cámara del parqueadero dejó de transmitir.",
-        prioridad: "Media",
-        ubicacion: "Parqueadero",
-        estado: "En proceso"
-    }
-];
+import pool from "../config/db.js";
 
 
-export const obtenerTodasLasIncidencias = () => {
+// Obtener todas las incidencias
+export const obtenerTodasLasIncidencias = async () => {
 
-    return incidencias;
-
-};
-
-export const obtenerIncidenciaPorId = (id) => {
-
-    return incidencias.find(
-        incidencia => incidencia.id === Number(id)
+    const [rows] = await pool.query(
+        "SELECT * FROM incidencias"
     );
 
+    return rows;
 };
 
-export const crearIncidencia = (datosIncidencia) => {
 
-    const nuevaIncidencia = {
+// Obtener una incidencia por ID
+export const obtenerIncidenciaPorId = async (id) => {
 
-        id: incidencias.length + 1,
+    const [rows] = await pool.query(
+        "SELECT * FROM incidencias WHERE id = ?",
+        [id]
+    );
 
-        titulo: datosIncidencia.titulo,
+    return rows[0] || null;
+};
 
-        descripcion: datosIncidencia.descripcion,
 
-        prioridad: datosIncidencia.prioridad,
+// Crear una incidencia
+export const crearIncidencia = async (datosIncidencia) => {
 
-        ubicacion: datosIncidencia.ubicacion,
+    const {
+        empresa_id,
+        titulo,
+        descripcion,
+        prioridad,
+        ubicacion
+    } = datosIncidencia;
 
+    const [resultado] = await pool.query(
+        `INSERT INTO incidencias
+        (
+            empresa_id,
+            titulo,
+            descripcion,
+            ubicacion,
+            prioridad,
+            estado,
+            fecha_incidente
+        )
+        VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+        [
+            empresa_id,
+            titulo,
+            descripcion,
+            ubicacion,
+            prioridad,
+            "Abierta"
+        ]
+    );
+
+    return {
+        id: resultado.insertId,
+        empresa_id,
+        titulo,
+        descripcion,
+        prioridad,
+        ubicacion,
         estado: "Abierta"
-
     };
-
-    incidencias.push(nuevaIncidencia);
-
-    return nuevaIncidencia;
-
 };
 
-export const actualizarIncidencia = (id, datosIncidencia) => {
 
-    const incidencia = incidencias.find(
-        incidencia => incidencia.id === Number(id)
-    );
+// Actualizar una incidencia
+export const actualizarIncidencia = async (id, datosIncidencia) => {
+
+    const incidencia = await obtenerIncidenciaPorId(id);
 
     if (!incidencia) {
         throw new Error("Incidencia no encontrada.");
     }
 
-    incidencia.titulo = datosIncidencia.titulo || incidencia.titulo;
-    incidencia.descripcion = datosIncidencia.descripcion || incidencia.descripcion;
-    incidencia.prioridad = datosIncidencia.prioridad || incidencia.prioridad;
-    incidencia.ubicacion = datosIncidencia.ubicacion || incidencia.ubicacion;
-    incidencia.estado = datosIncidencia.estado || incidencia.estado;
+    const {
+        titulo,
+        descripcion,
+        prioridad,
+        ubicacion,
+        estado
+    } = datosIncidencia;
 
-    return incidencia;
+    const nuevaIncidencia = {
+        titulo: titulo ?? incidencia.titulo,
+        descripcion: descripcion ?? incidencia.descripcion,
+        prioridad: prioridad ?? incidencia.prioridad,
+        ubicacion: ubicacion ?? incidencia.ubicacion,
+        estado: estado ?? incidencia.estado
+    };
 
-};
-
-export const eliminarIncidencia = (id) => {
-
-    const indice = incidencias.findIndex(
-        incidencia => incidencia.id === Number(id)
+    await pool.query(
+        `UPDATE incidencias
+        SET
+            titulo = ?,
+            descripcion = ?,
+            prioridad = ?,
+            ubicacion = ?,
+            estado = ?
+        WHERE id = ?`,
+        [
+            nuevaIncidencia.titulo,
+            nuevaIncidencia.descripcion,
+            nuevaIncidencia.prioridad,
+            nuevaIncidencia.ubicacion,
+            nuevaIncidencia.estado,
+            id
+        ]
     );
 
-    if (indice === -1) {
+    return obtenerIncidenciaPorId(id);
+};
+
+
+// Eliminar una incidencia
+export const eliminarIncidencia = async (id) => {
+
+    const incidencia = await obtenerIncidenciaPorId(id);
+
+    if (!incidencia) {
         throw new Error("Incidencia no encontrada.");
     }
 
-    incidencias.splice(indice, 1);
+    await pool.query(
+        "DELETE FROM incidencias WHERE id = ?",
+        [id]
+    );
 
+    return incidencia;
 };
