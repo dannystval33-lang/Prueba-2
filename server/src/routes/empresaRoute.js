@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
     getEmpresas,
     getEmpresaById,
@@ -7,17 +6,18 @@ import {
     putEmpresa,
     deleteEmpresa
 } from "../controllers/empresaController.js";
+import { verificarAutenticacion } from "../middlewares/authMiddleware.js"; // Importamos el middleware de autenticación
 
 const router = express.Router();
 
-router.get("/", getEmpresas);
+router.get("/", verificarAutenticacion, getEmpresas);
 
-router.get("/:id", getEmpresaById);
+router.get("/:id", verificarAutenticacion, getEmpresaById);
 
-router.post("/", postEmpresa);
+router.post("/", verificarAutenticacion,  postEmpresa);
 
-router.put("/:id", putEmpresa);
+router.put("/:id", verificarAutenticacion, putEmpresa);
 
-router.delete("/:id", deleteEmpresa);
+router.delete("/:id", verificarAutenticacion, deleteEmpresa);
 
 export default router;

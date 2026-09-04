@@ -5,12 +5,13 @@ import {
     actualizarIncidencia,
     eliminarIncidencia
 } from "../controllers/incidenciaController.js";
+import { verificarAutenticacion } from "../middlewares/authMiddleware.js"; // Importamos el middleware de autenticación
 
 const router = Router();
 
-router.get("/", getIncidencias);
-router.post("/", crearIncidencia);
-router.put("/:id", actualizarIncidencia);
-router.delete("/:id", eliminarIncidencia);
+router.get("/", verificarAutenticacion, getIncidencias);
+router.post("/", verificarAutenticacion, crearIncidencia);
+router.put("/:id", verificarAutenticacion, actualizarIncidencia);
+router.delete("/:id", verificarAutenticacion, eliminarIncidencia);
 
 export default router;
