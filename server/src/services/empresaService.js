@@ -36,7 +36,7 @@ export const crearEmpresa = async (datos) => {
 
     const [resultado] = await pool.query(
         `INSERT INTO empresas
-        (nombre, nit, direccion, telefono, email)
+        (nombre, nit, direccion, telefono, correo)
         VALUES (?, ?, ?, ?, ?)`,
         [
             nombre,
@@ -76,7 +76,7 @@ export const actualizarEmpresa = async (id, datos) => {
             nit = ?,
             direccion = ?,
             telefono = ?,
-            email = ?
+            correo = ?
         WHERE id = ?`,
         [
             nombre,
