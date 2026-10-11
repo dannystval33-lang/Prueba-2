@@ -3,6 +3,7 @@ import incidenciaRoutes from "./routes/incidenciaRoute.js";
 import empresaRoutes from "./routes/empresaRoute.js";
 import authRoutes from "./routes/authRoute.js";
 import cors from 'cors'; // Middleware para permitir solicitudes desde diferentes dominios
+import usuariosRoutes from './routes/usuarioRoute.js'; // Importación de las rutas de usuarios
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use(express.json()); // Middleware traductor de JSON para que el servidor pu
 app.use("/api/auth", authRoutes);
 app.use("/api/incidencias", incidenciaRoutes);
 app.use("/api/empresas", empresaRoutes);
+app.use('/api/usuarios', usuariosRoutes);
 
 export default app;
